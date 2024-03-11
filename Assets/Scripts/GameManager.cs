@@ -35,6 +35,10 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        _spawnerManager = FindObjectOfType<SpawnerManager>();
+        _boardManager = FindObjectOfType<BoardManager>();
+        _scoreManager = FindObjectOfType<ScoreManager>();
+        _followUpTheShapeManager = FindObjectOfType<FollowUpTheShapeManager>();
         if (_gameOverPanel)
         {
             _gameOverPanel.SetActive(false);
@@ -42,12 +46,9 @@ public class GameManager : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    public void StartTheGame()
     {
-        _spawnerManager = FindObjectOfType<SpawnerManager>();
-        _boardManager = FindObjectOfType<BoardManager>();
-        _scoreManager = FindObjectOfType<ScoreManager>();
-        _followUpTheShapeManager = FindObjectOfType<FollowUpTheShapeManager>();
+        _spawnerManager.MakeNullFNC();
 
         if (_spawnerManager)
         {

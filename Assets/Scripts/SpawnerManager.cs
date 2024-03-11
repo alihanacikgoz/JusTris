@@ -10,11 +10,7 @@ public class SpawnerManager : MonoBehaviour
     [SerializeField] ShapeManager[] allShapes;
     [SerializeField] private Image _image;
     private ShapeManager[] _shapeOnQueue = new ShapeManager[2];
-
-    private void Awake()
-    {
-        MakeNullFNC();
-    }
+    
 
     public ShapeManager CreateAShape()
     {
@@ -53,7 +49,7 @@ public class SpawnerManager : MonoBehaviour
         return nextShape;
     }
 
-    void MakeNullFNC()
+    public void MakeNullFNC()
     {
         for (int i = 0; i < _shapeOnQueue.Length; i++)
         {

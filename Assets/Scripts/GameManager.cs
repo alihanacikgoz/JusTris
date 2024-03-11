@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
 
     private FollowUpTheShapeManager _followUpTheShapeManager;
 
+    private bool isStarted = false;
+
     private void Awake()
     {
         _spawnerManager = FindObjectOfType<SpawnerManager>();
@@ -48,6 +50,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     public void StartTheGame()
     {
+        isStarted= true;
         _spawnerManager.MakeNullFNC();
 
         if (_spawnerManager)
@@ -69,7 +72,7 @@ public class GameManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (_followUpTheShapeManager)
+        if (_followUpTheShapeManager && isStarted)
         {
             _followUpTheShapeManager.CreateFollowUpShapeFNC(_activeShape, _boardManager);
         }

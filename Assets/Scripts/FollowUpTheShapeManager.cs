@@ -6,7 +6,7 @@ public class FollowUpTheShapeManager : MonoBehaviour
 {
     private ShapeManager _followUpShape;
     private bool _isHitTheBottom = false;
-    public Color color = new Color(1f,1f,1f, .2f);
+    public Color color = new Color(1f,1f,1f, 0.02f);
 
     public void CreateFollowUpShapeFNC(ShapeManager shape, BoardManager board)
     {

@@ -11,6 +11,8 @@ public class BoardManager : MonoBehaviour
     private Transform[,] _grids;
     public int _completedLines = 0;
 
+    public ParticleManager[] lineEffects = new ParticleManager[4];
+
     private void Awake()
     {
         _grids = new Transform[genislik, yukseklik];
@@ -137,7 +139,14 @@ public class BoardManager : MonoBehaviour
         {
             if (IsLineCompletedFNC(y))
             {
+                PlayLineEffectFNC(_completedLines, y);
                 _completedLines++;
+            }
+        }
+        for (int y = 0; y < yukseklik; ++y)
+        {
+            if (IsLineCompletedFNC(y))
+            {
                 ClearTheLineFNC(y);
                 MoveAllLinesDownFNC(y + 1);
                 y--;
@@ -156,6 +165,21 @@ public class BoardManager : MonoBehaviour
         }
 
         return false;
+    }
+    
+    void PlayLineEffectFNC(int whichLine, int y)
+    {
+        // if (lineEffect)
+        // {
+        //     lineEffect.transform.position = new Vector3(0, y, 0);
+        //     lineEffect.PlayEffectFNC();
+        // }
+
+        if (lineEffects[whichLine])
+        {
+            lineEffects[whichLine].transform.position = new Vector3(0, y, 0);
+            lineEffects[whichLine].PlayEffectFNC();
+        }
     }
     
 }

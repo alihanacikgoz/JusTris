@@ -190,7 +190,7 @@ public class GameManager : MonoBehaviour
             _followUpTheShapeManager.FollowUpShapeDestroyFNC();
         }
 
-        _boardManager.ClearAllLinesFNC();
+        StartCoroutine(_boardManager.ClearAllLinesFNC());
         if (_boardManager._completedLines > 0)
         {
             if (_scoreManager)

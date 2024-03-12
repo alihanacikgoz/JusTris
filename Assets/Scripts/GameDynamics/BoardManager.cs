@@ -132,7 +132,7 @@ public class BoardManager : MonoBehaviour
             MoveOneLineDownFNC(i);
         }
     }
-    public void ClearAllLinesFNC()
+    public IEnumerator ClearAllLinesFNC()
     {
         _completedLines = 0;
         for (int y = 0; y < yukseklik; ++y)
@@ -142,16 +142,20 @@ public class BoardManager : MonoBehaviour
                 PlayLineEffectFNC(_completedLines, y);
                 _completedLines++;
             }
+            yield return new WaitForSeconds(0.01f);
         }
+        yield return new WaitForSeconds(0.01f);
         for (int y = 0; y < yukseklik; ++y)
         {
             if (IsLineCompletedFNC(y))
             {
                 ClearTheLineFNC(y);
                 MoveAllLinesDownFNC(y + 1);
+                yield return new WaitForSeconds(0.01f);
                 y--;
             }
         }
+        
     }
 
     public bool IsOutOfBounds(ShapeManager shape)

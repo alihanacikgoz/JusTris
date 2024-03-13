@@ -1,6 +1,7 @@
-using System;
+
 using UnityEngine;
-using UnityEngine.Serialization;
+using DG.Tweening;
+
 
 
 public class GameManager : MonoBehaviour
@@ -56,8 +57,14 @@ public class GameManager : MonoBehaviour
         if (_spawnerManager)
         {
             _activeShape = _spawnerManager.CreateAShape();
+            _activeShape.transform.localScale = Vector3.zero;
             _activeShape.transform.position = VectorToIntFNC(_activeShape.transform.position);
+            _activeShape.transform.DOScale(1, .5f).SetEase(Ease.OutBack);
+            
         }
+        
+            
+       
         _moveDownLevelCounter = _moveDownTime;
     }
 
@@ -183,6 +190,8 @@ public class GameManager : MonoBehaviour
         if (_spawnerManager)
         {
             _activeShape = _spawnerManager.CreateAShape();
+            _activeShape.transform.localScale = Vector3.zero;
+            _activeShape.transform.DOScale(1, .5f).SetEase(Ease.OutBack);
         }
 
         if (_followUpTheShapeManager)

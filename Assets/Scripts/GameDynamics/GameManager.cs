@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     private FollowUpTheShapeManager _followUpTheShapeManager;
 
-    private bool isStarted = false;
+    private bool isStarted = false, canMove = false;
 
     private void Awake()
     {
@@ -59,18 +59,14 @@ public class GameManager : MonoBehaviour
             _activeShape = _spawnerManager.CreateAShape();
             _activeShape.transform.localScale = Vector3.zero;
             _activeShape.transform.position = VectorToIntFNC(_activeShape.transform.position);
-            _activeShape.transform.DOScale(1, .5f).SetEase(Ease.OutBack);
-            
+            _activeShape.transform.DOScale(1, .5f).SetEase(Ease.OutBack).OnComplete(()=>canMove = true);
         }
-        
-            
-       
         _moveDownLevelCounter = _moveDownTime;
     }
 
     private void Update()
     {
-        if (!_boardManager || !_spawnerManager || !_activeShape || _gameOver || !_scoreManager)
+        if (!_boardManager || !_spawnerManager || !_activeShape || _gameOver || !_scoreManager || !canMove)
         {
             return;
         }
@@ -79,6 +75,10 @@ public class GameManager : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (!_boardManager || !_spawnerManager || !_activeShape || _gameOver || !_scoreManager || !canMove)
+        {
+            return;
+        }
         if (_followUpTheShapeManager && isStarted)
         {
             _followUpTheShapeManager.CreateFollowUpShapeFNC(_activeShape, _boardManager);

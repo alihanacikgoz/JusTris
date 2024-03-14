@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -34,7 +35,7 @@ public class GameManager : MonoBehaviour
 
     private bool isStarted = false;
 
-    public ParticleManager LevelUpEffect;
+    public ParticleManager[] LevelUpEffects;
 
     private void Awake()
     {
@@ -206,7 +207,7 @@ public class GameManager : MonoBehaviour
                 else
                     SoundManager.instance.PlaySoundEffectFNC(2);
                 
-                LevelUpEffect.PlayEffectFNC();
+                StartCoroutine(LevelUpEffectFnc());
                 _moveDownLevelCounter = _moveDownTime - Mathf.Clamp(((float)_scoreManager.level - 1) * _levelMultiplyer, 0.05f, 1f);
             }
             else
@@ -224,5 +225,18 @@ public class GameManager : MonoBehaviour
     Vector2 VectorToIntFNC(Vector2 vector)
     {
         return new Vector2(Mathf.Round(vector.x), Mathf.Round(vector.y));
+    }
+
+    IEnumerator LevelUpEffectFnc()
+    {
+        yield return new WaitForSeconds(0.3f);
+        int counter = 0;
+        while (counter<LevelUpEffects.Length)
+        {
+            LevelUpEffects[counter].PlayEffectFNC();
+            yield return new WaitForSeconds(0.3f);
+            counter++;
+        }
+        
     }
 }

@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-
 public class GameManager : MonoBehaviour
 {
     private SpawnerManager _spawnerManager;
@@ -27,13 +26,15 @@ public class GameManager : MonoBehaviour
 
     public bool _gameOver = false;
     [SerializeField] private GameObject _gameOverPanel; 
-    [SerializeField] private Sprite _nextShapeSprite;
+    //[SerializeField] private Sprite _nextShapeSprite;
 
     private ScoreManager _scoreManager;
 
     private FollowUpTheShapeManager _followUpTheShapeManager;
 
     private bool isStarted = false;
+
+    public ParticleManager LevelUpEffect;
 
     private void Awake()
     {
@@ -204,7 +205,8 @@ public class GameManager : MonoBehaviour
                     SoundManager.instance.PlaySoundEffectFNC(8);
                 else
                     SoundManager.instance.PlaySoundEffectFNC(2);
-
+                
+                LevelUpEffect.PlayEffectFNC();
                 _moveDownLevelCounter = _moveDownTime - Mathf.Clamp(((float)_scoreManager.level - 1) * _levelMultiplyer, 0.05f, 1f);
             }
             else

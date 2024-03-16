@@ -217,7 +217,6 @@ public class GameManager : MonoBehaviour
                     SoundManager.instance.PlayRandomVocalSoundFNC();
                 }
             }
-
             SoundManager.instance.PlaySoundEffectFNC(4);
         }
     }

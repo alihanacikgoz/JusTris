@@ -45,6 +45,7 @@ public class SoundManager : MonoBehaviour
     {
         if (isEffecsOn && _sfxSources.Length > soundIndis)
         {
+            _sfxSources[soundIndis].volume = PlayerPrefs.GetFloat("fxVolume");
             _sfxSources[soundIndis].Stop();
             _sfxSources[soundIndis].Play();
         }
@@ -60,6 +61,7 @@ public class SoundManager : MonoBehaviour
         if (!musicClip || !_musicSource || !isMusicOn)
             return;
         
+        _musicSource.volume = PlayerPrefs.GetFloat("musicVolume");
         _musicSource.clip = musicClip;
         _musicSource.Play();
     }
@@ -85,7 +87,6 @@ public class SoundManager : MonoBehaviour
             {
                 _musicSource.Stop();
             }
-            
         }
     }
     

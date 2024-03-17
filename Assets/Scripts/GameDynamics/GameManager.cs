@@ -14,7 +14,8 @@ public class GameManager : MonoBehaviour
 
     [Range(0.01f, 1f)] [SerializeField] private float _levelMultiplyer;
 
-    private float _moveDownCounter = 0f,
+    private float 
+        _moveDownCounter = 0f,
         _moveDownLevelCounter,
         _horizontal,
         _rightLeftMovePressCounter,
@@ -30,12 +31,26 @@ public class GameManager : MonoBehaviour
     //[SerializeField] private Sprite _nextShapeSprite;
 
     private ScoreManager _scoreManager;
-
     private FollowUpTheShapeManager _followUpTheShapeManager;
-
     private bool isStarted = false;
-
     public ParticleManager[] LevelUpEffects;
+    
+    enum Direction{none, left, right, up, down}
+    Direction _swipeDirection = Direction.none;
+    Direction _swipeDirectionEnd = Direction.none;
+
+    private void OnEnable()
+    {
+        TouchManager.OnTouch += SwipeStartFNC;
+        TouchManager.OnTouchEnded += SwipeEndFNC;
+    }
+
+    private void OnDisable()
+    {
+        TouchManager.OnTouch -= SwipeStartFNC;
+        TouchManager.OnTouchEnded -= SwipeEndFNC;
+        
+    }
 
     private void Awake()
     {
@@ -97,6 +112,28 @@ public class GameManager : MonoBehaviour
         else if (((Input.GetKey("down") && Time.time > _downButtonPressCounter)) || Time.time > _moveDownCounter)
         {
             MoveDown();
+            _swipeDirection = Direction.none;
+            _swipeDirectionEnd = Direction.none;
+        } else if ((_swipeDirection == Direction.right && Time.time > _rightLeftMovePressCounter) || _swipeDirectionEnd == Direction.right)
+        {
+            MoveRight();
+            _swipeDirection = Direction.none;
+            _swipeDirectionEnd = Direction.none;
+        } else if ((_swipeDirection == Direction.left && Time.time > _rightLeftMovePressCounter) || _swipeDirectionEnd == Direction.left)
+        {
+            MoveLeft();
+            _swipeDirection = Direction.none;
+            _swipeDirectionEnd = Direction.none;
+        } else if (_swipeDirection == Direction.up && Time.time > _rightLeftRotatePressCounter)
+        {
+            RotateShape();
+            _swipeDirection = Direction.none;
+            _swipeDirectionEnd = Direction.none;
+        } else if ((_swipeDirection == Direction.down && Time.time > _downButtonPressCounter) || Time.time > _moveDownCounter)
+        {
+            MoveDown();
+            _swipeDirection = Direction.none;
+            _swipeDirectionEnd = Direction.none;
         }
     }
 
@@ -237,5 +274,31 @@ public class GameManager : MonoBehaviour
             counter++;
         }
         
+    }
+
+    void SwipeStartFNC(Vector2 direction)
+    {
+        _swipeDirection = DefineDirectionFNC(direction);
+    }
+
+    void SwipeEndFNC(Vector2 direction)
+    {
+        _swipeDirectionEnd = DefineDirectionFNC(direction);
+    }
+
+    Direction DefineDirectionFNC(Vector2 direction)
+    {
+        Direction swipeDirection = Direction.none;
+
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            swipeDirection = (direction.x > 0) ? Direction.right : Direction.left;
+        }
+        else
+        {
+            swipeDirection = (direction.y > 0) ? Direction.up : Direction.down;
+        }
+
+        return swipeDirection;
     }
 }

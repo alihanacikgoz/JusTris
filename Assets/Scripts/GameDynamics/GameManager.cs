@@ -20,11 +20,13 @@ public class GameManager : MonoBehaviour
         _horizontal,
         _rightLeftMovePressCounter,
         _rightLeftRotatePressCounter,
-        _downButtonPressCounter;
+        _downButtonPressCounter,
+        _touchDownCounter;
 
     [Range(0.01f, 1f)] [SerializeField] private float _moveButtonPressingTime = .25f;
     [Range(0.01f, 1f)] [SerializeField] private float _rotateButtonPressingTime = .25f;
     [Range(0.01f, 1f)] [SerializeField] private float _downButtonPressingTime = .25f;
+    [Range(0.01f, 1f)] [SerializeField] private float _touchDownTime = .25f;
 
     public bool _gameOver = false;
     [SerializeField] private GameObject _gameOverPanel; 
@@ -39,16 +41,27 @@ public class GameManager : MonoBehaviour
     Direction _swipeDirection = Direction.none;
     Direction _swipeDirectionEnd = Direction.none;
 
+    private float _laterOnTouchTime;
+    private float _laterOnDragTime;
+    
+    [Range(0.05f, 1f)] public float minimumTouchTime = .15f;
+    [Range(0.05f, 1f)] public float minimumDragTime = .3f;
+
+    private bool isTouched = false;
+
     private void OnEnable()
     {
-        TouchManager.OnTouch += SwipeStartFNC;
-        TouchManager.OnTouchEnded += SwipeEndFNC;
+        TouchManager.OnDragEvent += SwipeStartFNC;
+        TouchManager.OnSwipeEvent += SwipeEndFNC;
+        TouchManager.OnTapEvent += TappedFNC;
     }
 
     private void OnDisable()
     {
-        TouchManager.OnTouch -= SwipeStartFNC;
-        TouchManager.OnTouchEnded -= SwipeEndFNC;
+        TouchManager.OnDragEvent -= SwipeStartFNC;
+        TouchManager.OnSwipeEvent -= SwipeEndFNC;
+        TouchManager.OnTapEvent -= TappedFNC;
+        
         
     }
 
@@ -109,32 +122,38 @@ public class GameManager : MonoBehaviour
         {
             RotateShape();
         }
-        else if (((Input.GetKey("down") && Time.time > _downButtonPressCounter)) || Time.time > _moveDownCounter)
+        else if (((Input.GetKey("down") && Time.time > _downButtonPressCounter)) || Time.time > _moveDownCounter || (isTouched))
         {
             MoveDown();
-            _swipeDirection = Direction.none;
-            _swipeDirectionEnd = Direction.none;
-        } else if ((_swipeDirection == Direction.right && Time.time > _rightLeftMovePressCounter) || _swipeDirectionEnd == Direction.right)
+        } else if ((_swipeDirectionEnd == Direction.right && Time.time > _laterOnDragTime) || (_swipeDirection == Direction.right&&Time.time > _laterOnTouchTime))
         {
             MoveRight();
-            _swipeDirection = Direction.none;
-            _swipeDirectionEnd = Direction.none;
-        } else if ((_swipeDirection == Direction.left && Time.time > _rightLeftMovePressCounter) || _swipeDirectionEnd == Direction.left)
+            _laterOnTouchTime = Time.time + minimumTouchTime;
+            _laterOnDragTime = Time.time + minimumDragTime;
+           // _swipeDirection = Direction.none;
+            //_swipeDirectionEnd = Direction.none;
+        } else if ((_swipeDirectionEnd == Direction.left && Time.time > _laterOnDragTime) || (_swipeDirection == Direction.left&&Time.time > _laterOnTouchTime))
         {
             MoveLeft();
-            _swipeDirection = Direction.none;
-            _swipeDirectionEnd = Direction.none;
-        } else if (_swipeDirection == Direction.up && Time.time > _rightLeftRotatePressCounter)
+            _laterOnTouchTime = Time.time + minimumTouchTime;
+            _laterOnDragTime = Time.time + minimumDragTime;
+            //_swipeDirection = Direction.none;
+            //_swipeDirectionEnd = Direction.none;
+        } else if (_swipeDirectionEnd == Direction.up && Time.time > _laterOnDragTime)
         {
             RotateShape();
-            _swipeDirection = Direction.none;
-            _swipeDirectionEnd = Direction.none;
-        } else if ((_swipeDirection == Direction.down && Time.time > _downButtonPressCounter) || Time.time > _moveDownCounter)
+            _laterOnDragTime = Time.time + minimumDragTime;
+            //_swipeDirection = Direction.none;
+            //_swipeDirectionEnd = Direction.none;
+        } else if ((_swipeDirection == Direction.down && Time.time > _laterOnTouchTime))
         {
             MoveDown();
-            _swipeDirection = Direction.none;
-            _swipeDirectionEnd = Direction.none;
+            //_swipeDirection = Direction.none;
+            //_swipeDirectionEnd = Direction.none;
         }
+        _swipeDirection = Direction.none;
+        _swipeDirectionEnd = Direction.none;
+        isTouched = false;
     }
 
     public void MoveDown()
@@ -215,6 +234,7 @@ public class GameManager : MonoBehaviour
 
     private void PlacedFNC()
     {
+        _laterOnTouchTime = Time.time + minimumTouchTime;
         _rightLeftMovePressCounter = Time.time;
         _rightLeftRotatePressCounter = Time.time;
         _activeShape.MoveUpFNC();
@@ -300,5 +320,10 @@ public class GameManager : MonoBehaviour
         }
 
         return swipeDirection;
+    }
+    
+    void TappedFNC(Vector2 position)
+    {
+        isTouched = true; 
     }
 }

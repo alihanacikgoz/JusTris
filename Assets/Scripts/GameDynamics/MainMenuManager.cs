@@ -29,18 +29,21 @@ namespace GameDynamics
 
         public void OpenSettingsMenuFNC()
         {
+            SoundManager.instance.PlaySoundEffectFNC(0);
             _mainMenuPannel.GetComponent<RectTransform>().DOLocalMoveX(-1200, 0.5f);
             _settingsMenuPanel.GetComponent<RectTransform>().DOLocalMoveX(0, 0.5f);
         }
 
         public void CloseSettingsMenuFNC()
         {
+            SoundManager.instance.PlaySoundEffectFNC(0);
             _mainMenuPannel.GetComponent<RectTransform>().DOLocalMoveX(0, 0.5f);
             _settingsMenuPanel.GetComponent<RectTransform>().DOLocalMoveX(1200, 0.5f);
         }
 
         public void PlayFNC()
         {
+            SoundManager.instance.PlaySoundEffectFNC(0);
             SceneManager.LoadScene("GameScene");
         }
 

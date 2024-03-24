@@ -25,7 +25,7 @@ public class AdManager : MonoBehaviour
         {
             // This callback is called once the MobileAds SDK is initialized.
         });
-        CreateBannerView();
+        
         LoadAd();
     }
     
@@ -44,7 +44,7 @@ public class AdManager : MonoBehaviour
         }
 
         // Create a 320x50 banner at top of the screen
-        _bannerView = new BannerView(_adUnitId, AdSize.Banner, (int)Screen.safeArea.center.x/10,50);
+        _bannerView = new BannerView(_adUnitId, AdSize.IABBanner, 0,50);
     }
     
     /// <summary>

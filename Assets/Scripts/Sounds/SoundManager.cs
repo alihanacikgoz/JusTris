@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.PlayerLoop;
 
 
 public class SoundManager : MonoBehaviour
@@ -9,12 +9,14 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip[] _musicClips;
     [SerializeField] private AudioSource _musicSource;
     private AudioClip _randomClip;
+    
     public bool isMusicOn = true;
     
     [Header("Sound Effects")]
     [SerializeField] private AudioSource[] _sfxSources;
 
     [SerializeField] private AudioSource[] _vocalClips;
+    [SerializeField] private AudioSource[] _gameOverSoundsSource;
     public bool isEffecsOn = true;
 
     public ButtonIconChangerManager musicIcon;
@@ -49,6 +51,17 @@ public class SoundManager : MonoBehaviour
             _sfxSources[soundIndis].Stop();
             _sfxSources[soundIndis].Play();
         }
+    }
+
+    public void PlayGameOverMusicFNC()
+    {
+        if (isEffecsOn && _gameOverSoundsSource.Length > 0)
+        {
+            AudioSource source = _gameOverSoundsSource[Random.Range(0, _gameOverSoundsSource.Length)];
+            source.Stop();
+            source.Play();
+        }
+        
     }
 
     AudioClip ChoseRandomClipFNC(AudioClip[] clips)

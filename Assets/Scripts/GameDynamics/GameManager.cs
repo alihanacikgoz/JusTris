@@ -176,7 +176,7 @@ public class GameManager : MonoBehaviour
                         _gameOverPanel.SetActive(true);
                     }
 
-                    SoundManager.instance.PlaySoundEffectFNC(6);
+                    SoundManager.instance.PlayGameOverMusicFNC();
                 }
                 else
                 {

@@ -15,13 +15,10 @@ public class TouchManager : MonoBehaviour
     private Vector2 _touchPosition;
     
     [Range(20,250)]
-    public int minimumDragDistance = 50;
+    public int minimumDragDistance = 5;
     [Range(20,250)]
-    public int minimumSwipeDistance = 50;
-    public int minimumUpDistance = 30;
+    public int minimumSwipeDistance = 5;
     
-    public bool isDebugUsing = false;
-
     private float _tapMaxTime = 0f;
     public float tapTime = .1f;
 

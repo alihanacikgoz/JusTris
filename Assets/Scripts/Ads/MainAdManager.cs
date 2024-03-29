@@ -81,6 +81,7 @@ public class MainAdManager : MonoBehaviour
         else
         {
             Debug.LogError("Interstitial ad is not ready yet.");
+            _mainMenuManager.PlayFNC();
         }
     }
     

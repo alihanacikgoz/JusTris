@@ -18,5 +18,6 @@ MonoBehaviour:
   enableKotlinXCoroutinesPackagingOption: 1
   optimizeInitialization: 1
   optimizeAdLoading: 1
-  userTrackingUsageDescription: 
+  userTrackingUsageDescription: This app uses ad data to ensure you a better advertisement
+    experience.
   validateGradleDependencies: 1
